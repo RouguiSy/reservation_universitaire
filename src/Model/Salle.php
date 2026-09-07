@@ -22,4 +22,26 @@ class Salle extends Model
     {
         return $this->hasMany(Reservation::class);
     }
+
+    public function reservationsConfirmees(): HasMany
+    {
+        return $this->reservations()->where('statut', 'confirmee');
+    }
+
+    public function estActive(): bool
+    {
+        return $this->active;
+    }
+
+    public function activer(): void
+    {
+        $this->active = true;
+        $this->save();
+    }
+
+    public function desactiver(): void
+    {
+        $this->active = false;
+        $this->save();
+    }
 }
