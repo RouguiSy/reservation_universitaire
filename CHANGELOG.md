@@ -1,32 +1,30 @@
 # Journal des modifications
 
+## [v0.12.0] - 2026-09-07
+### Ajoute
+- InMemorySalleRepository pour les tests
+- InMemoryReservationRepository pour les tests
+- CreerReservationServiceTest (unitaires)
+- AnnulerReservationServiceTest (unitaires)
+- phpunit.xml
+- Commande composer test
+
+### Modifie
+- composer.json avec phpunit et scripts de test
+
 ## [v0.11.0] - 2026-09-07
 ### Ajoute
 - PHP-DI container
-- Autowiring automatique
-- Bindings pour les interfaces
-- Injection des dependances dans les controleurs
-- Injection des dependances dans les services
-- Page d'erreur 404
-
-### Modifie
-- config/container.php avec toutes les definitions
-- src/Application.php avec le container
-- public/index.php pour utiliser le container
+- Autowiring
+- Injection de dependances
 
 ## [v0.10.0] - 2026-09-07
 ### Ajoute
-- FastRoute pour le routage
-- Application.php pour le dispatch
-- HomeController
-- routes/web.php
+- FastRoute
 
 ## [v0.9.0] - 2026-09-07
 ### Ajoute
-- SalleController
-- ReservationController
-- Vues et templates
-- CSS
+- Controleurs et vues
 
 ## [v0.8.0] - 2026-09-07
 ### Ajoute
