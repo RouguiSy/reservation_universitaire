@@ -1,41 +1,33 @@
 # Journal des modifications
 
+## [v0.6.0] - 2026-09-07
+### Ajoute
+- CreerSalleDTO avec validation
+- CreerReservationDTO avec validation
+- Proprietes readonly (immuables)
+- Methodes depuisTableau() et toArray()
+- Validation integree dans les DTO
+
 ## [v0.5.0] - 2026-09-07
 ### Ajoute
-- ValidationResult pour les resultats
-- ValidatorInterface pour standardiser
-- SalleValidator avec validation Illuminate + Eloquent
-- ReservationValidator avec validation Illuminate + Eloquent
-- Verification unicite salle (nom + batiment)
-- Verification existence et activite de la salle
-- Verification conflits de reservation via Eloquent
-- Verification duree max 24h
+- Couche de validation avec Eloquent
 
 ## [v0.4.0] - 2026-09-07
 ### Ajoute
-- 10 salles avec donnees initiales
-- 8 reservations de test
+- Donnees initiales enrichies
 
 ## [v0.3.0] - 2026-09-07
 ### Ajoute
-- Model Salle avec relations et methodes
-- Model Reservation avec relations et methodes
+- Modeles Eloquent complets
 
 ## [v0.2.0] - 2026-09-07
 ### Ajoute
-- Eloquent ORM
-- Migrations
-- Seed
-- Docker Compose
+- Eloquent, migrations, seed
 
 ## [v0.1.0] - 2026-09-07
 ### Ajoute
-- Composer
-- Autoloading
-- Structure
-- bin/Rougui
+- Composer, autoloading, structure
 
 ## [v0.0.0] - 2026-09-07
 ### Ajoute
 - Initialisation du depot
-- Structure de base
