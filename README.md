@@ -1,24 +1,27 @@
 # Reservation de salles universitaires
 
-## Services metier
+## Controleurs
 
-### CreerReservationService
-- Verifie l'existence de la salle
-- Verifie que la salle est active
-- Verifie que la duree ne depasse pas 24h
-- Verifie l'absence de conflits
-- Cree la reservation confirmee
+### SalleController
+- index() : Liste des salles
+- create() : Formulaire de creation
+- store() : Sauvegarde d'une salle
+- toggle() : Activer/Desactiver une salle
+- delete() : Supprimer une salle
 
-### AnnulerReservationService
-- Verifie l'existence de la reservation
-- Verifie que la reservation n'est pas deja annulee
-- Annule la reservation
+### ReservationController
+- index() : Liste des reservations
+- create() : Formulaire de creation
+- store() : Sauvegarde d'une reservation
+- cancel() : Annuler une reservation
 
-### Exceptions
-- SalleIndisponibleException::conflit()
-- SalleIndisponibleException::salleInactive()
-- SalleIndisponibleException::dureeExcessive()
-- SalleIndisponibleException::salleNonTrouvee()
+## Vues
+- layout.php : Template principal
+- salles/index.php : Liste des salles
+- salles/create.php : Formulaire salle
+- reservations/index.php : Liste des reservations
+- reservations/create.php : Formulaire reservation
+- style.css : Styles CSS
 
 ## Versions
 
@@ -31,6 +34,7 @@
 - v0.6.0 : DTO
 - v0.7.0 : Repositories
 - v0.8.0 : Services metier
+- v0.9.0 : Controleurs et vues
 
 ## Auteurs
 
