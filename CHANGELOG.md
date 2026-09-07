@@ -1,12 +1,18 @@
 # Journal des modifications
 
+## [v0.7.0] - 2026-09-07
+### Ajoute
+- SalleRepositoryInterface
+- EloquentSalleRepository
+- ReservationRepositoryInterface
+- EloquentReservationRepository
+- Respect du principe Open/Closed
+- Separation des responsabilites
+
 ## [v0.6.0] - 2026-09-07
 ### Ajoute
-- CreerSalleDTO avec validation
-- CreerReservationDTO avec validation
-- Proprietes readonly (immuables)
-- Methodes depuisTableau() et toArray()
-- Validation integree dans les DTO
+- CreerSalleDTO
+- CreerReservationDTO
 
 ## [v0.5.0] - 2026-09-07
 ### Ajoute
