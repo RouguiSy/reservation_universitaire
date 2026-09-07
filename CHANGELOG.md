@@ -1,13 +1,20 @@
 # Journal des modifications
 
+## [v0.8.0] - 2026-09-07
+### Ajoute
+- SalleIndisponibleException
+- CreerReservationService
+- AnnulerReservationService
+- Regles metier de reservation
+- Verification des conflits
+- Verification de la duree max 24h
+
 ## [v0.7.0] - 2026-09-07
 ### Ajoute
 - SalleRepositoryInterface
 - EloquentSalleRepository
 - ReservationRepositoryInterface
 - EloquentReservationRepository
-- Respect du principe Open/Closed
-- Separation des responsabilites
 
 ## [v0.6.0] - 2026-09-07
 ### Ajoute

@@ -1,36 +1,24 @@
 # Reservation de salles universitaires
 
-## Architecture
+## Services metier
 
-### Repositories
-- **SalleRepositoryInterface** : Contrat pour les operations sur les salles
-- **EloquentSalleRepository** : Implementation Eloquent
-- **ReservationRepositoryInterface** : Contrat pour les operations sur les reservations
-- **EloquentReservationRepository** : Implementation Eloquent
+### CreerReservationService
+- Verifie l'existence de la salle
+- Verifie que la salle est active
+- Verifie que la duree ne depasse pas 24h
+- Verifie l'absence de conflits
+- Cree la reservation confirmee
 
-### Principes
-- Open/Closed : Les repositories sont fermes a la modification, ouverts a l'extension
-- Inversion de dependances : Les services dependent des interfaces
+### AnnulerReservationService
+- Verifie l'existence de la reservation
+- Verifie que la reservation n'est pas deja annulee
+- Annule la reservation
 
-### Methodes disponibles
-
-#### SalleRepository
-- trouver(int $id)
-- trouverParNomEtBatiment(string $nom, string $batiment)
-- toutes()
-- actives()
-- creer(array $donnees)
-- mettreAJour(Salle $salle, array $donnees)
-- supprimer(Salle $salle)
-
-#### ReservationRepository
-- trouver(int $id)
-- trouverParSalle(int $salleId)
-- trouverParSalleEtPeriode(int $salleId, DateTime $debut, DateTime $fin)
-- trouverEnCoursParSalle(int $salleId)
-- creer(array $donnees)
-- annuler(Reservation $reservation)
-- supprimer(Reservation $reservation)
+### Exceptions
+- SalleIndisponibleException::conflit()
+- SalleIndisponibleException::salleInactive()
+- SalleIndisponibleException::dureeExcessive()
+- SalleIndisponibleException::salleNonTrouvee()
 
 ## Versions
 
@@ -42,6 +30,7 @@
 - v0.5.0 : Validation
 - v0.6.0 : DTO
 - v0.7.0 : Repositories
+- v0.8.0 : Services metier
 
 ## Auteurs
 
