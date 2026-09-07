@@ -4,16 +4,18 @@ Application de reservation de salles avec PHP 8, Eloquent ORM, et MySQL.
 
 ## Installation
 
+### Avec Docker (Recommandé)
+
 ```bash
+# Cloner le projet
 git clone https://github.com/RouguiSy/reservation_universitaire.git
 cd reservation_universitaire
 
-composer install
+# Démarrer les conteneurs
+docker compose up -d
 
-cp .env.example .env
+# Executer les migrations
+docker compose exec web php bin/Rougui migrate
 
-php bin/console migrate
-
-php bin/console seed
-
-php bin/console serve
+# Ajouter les donnees initiales
+docker compose exec web php bin/Rougui seed
