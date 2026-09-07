@@ -1,46 +1,48 @@
 # Journal des modifications
 
+## [v0.9.0] - 2026-09-07
+### Ajoute
+- SalleController (index, create, store, toggle, delete)
+- ReservationController (index, create, store, cancel)
+- Template layout.php
+- Vues salles/index.php et salles/create.php
+- Vues reservations/index.php et reservations/create.php
+- CSS style.css
+- Gestion des messages flash en session
+
 ## [v0.8.0] - 2026-09-07
 ### Ajoute
-- SalleIndisponibleException
-- CreerReservationService
-- AnnulerReservationService
-- Regles metier de reservation
-- Verification des conflits
-- Verification de la duree max 24h
+- Services metier
+- Exceptions
 
 ## [v0.7.0] - 2026-09-07
 ### Ajoute
-- SalleRepositoryInterface
-- EloquentSalleRepository
-- ReservationRepositoryInterface
-- EloquentReservationRepository
+- Repositories
 
 ## [v0.6.0] - 2026-09-07
 ### Ajoute
-- CreerSalleDTO
-- CreerReservationDTO
+- DTO
 
 ## [v0.5.0] - 2026-09-07
 ### Ajoute
-- Couche de validation avec Eloquent
+- Validation
 
 ## [v0.4.0] - 2026-09-07
 ### Ajoute
-- Donnees initiales enrichies
+- Donnees initiales
 
 ## [v0.3.0] - 2026-09-07
 ### Ajoute
-- Modeles Eloquent complets
+- Modeles
 
 ## [v0.2.0] - 2026-09-07
 ### Ajoute
-- Eloquent, migrations, seed
+- Eloquent
 
 ## [v0.1.0] - 2026-09-07
 ### Ajoute
-- Composer, autoloading, structure
+- Composer
 
 ## [v0.0.0] - 2026-09-07
 ### Ajoute
-- Initialisation du depot
+- Initialisation
