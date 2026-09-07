@@ -1,27 +1,25 @@
 # Reservation de salles universitaires
 
-## Controleurs
+## Injection de dépendances avec PHP-DI
 
-### SalleController
-- index() : Liste des salles
-- create() : Formulaire de creation
-- store() : Sauvegarde d'une salle
-- toggle() : Activer/Desactiver une salle
-- delete() : Supprimer une salle
+### Container PHP-DI
+- Autowiring automatique
+- Bindings pour les interfaces
+- Injection dans les contrôleurs
+- Injection dans les services
 
-### ReservationController
-- index() : Liste des reservations
-- create() : Formulaire de creation
-- store() : Sauvegarde d'une reservation
-- cancel() : Annuler une reservation
+### Bindings
 
-## Vues
-- layout.php : Template principal
-- salles/index.php : Liste des salles
-- salles/create.php : Formulaire salle
-- reservations/index.php : Liste des reservations
-- reservations/create.php : Formulaire reservation
-- style.css : Styles CSS
+| Interface | Implementation |
+|-----------|----------------|
+| SalleRepositoryInterface | EloquentSalleRepository |
+| ReservationRepositoryInterface | EloquentReservationRepository |
+
+### Auto-injection
+- CreerReservationService → repositories
+- AnnulerReservationService → reservationRepository
+- SalleController → salleRepository
+- ReservationController → repositories + services
 
 ## Versions
 
@@ -35,6 +33,8 @@
 - v0.7.0 : Repositories
 - v0.8.0 : Services metier
 - v0.9.0 : Controleurs et vues
+- v0.10.0 : FastRoute
+- v0.11.0 : PHP-DI
 
 ## Auteurs
 

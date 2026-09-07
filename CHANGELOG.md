@@ -1,19 +1,36 @@
 # Journal des modifications
 
+## [v0.11.0] - 2026-09-07
+### Ajoute
+- PHP-DI container
+- Autowiring automatique
+- Bindings pour les interfaces
+- Injection des dependances dans les controleurs
+- Injection des dependances dans les services
+- Page d'erreur 404
+
+### Modifie
+- config/container.php avec toutes les definitions
+- src/Application.php avec le container
+- public/index.php pour utiliser le container
+
+## [v0.10.0] - 2026-09-07
+### Ajoute
+- FastRoute pour le routage
+- Application.php pour le dispatch
+- HomeController
+- routes/web.php
+
 ## [v0.9.0] - 2026-09-07
 ### Ajoute
-- SalleController (index, create, store, toggle, delete)
-- ReservationController (index, create, store, cancel)
-- Template layout.php
-- Vues salles/index.php et salles/create.php
-- Vues reservations/index.php et reservations/create.php
-- CSS style.css
-- Gestion des messages flash en session
+- SalleController
+- ReservationController
+- Vues et templates
+- CSS
 
 ## [v0.8.0] - 2026-09-07
 ### Ajoute
 - Services metier
-- Exceptions
 
 ## [v0.7.0] - 2026-09-07
 ### Ajoute
