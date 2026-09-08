@@ -1,15 +1,17 @@
 # Reservation de salles universitaires
 
-## Tests
+Application de reservation de salles avec PHP 8, Eloquent ORM, et MySQL.
 
-### Tests unitaires
-- CreerReservationServiceTest
-- AnnulerReservationServiceTest
+## Installation
 
-### Doublures (InMemory)
-- InMemorySalleRepository
-- InMemoryReservationRepository
+### Avec Docker (Recommandé)
 
-### Exécution des tests
 ```bash
-composer test
+git clone https://github.com/RouguiSy/reservation_universitaire.git
+cd reservation_universitaire
+
+docker compose up -d
+
+docker compose exec web php bin/Rougui migrate
+
+docker compose exec web php bin/Rougui seed
