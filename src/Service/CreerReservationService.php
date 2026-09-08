@@ -30,8 +30,8 @@ class CreerReservationService
             throw SalleIndisponibleException::salleInactive();
         }
 
-        $duree = $dto->dateDebut->diff($dto->dateFin);
-        if ($duree->days > 1) {
+        $dureeEnSecondes = $dto->dateFin->getTimestamp() - $dto->dateDebut->getTimestamp();
+        if ($dureeEnSecondes > 24 * 60 * 60) {
             throw SalleIndisponibleException::dureeExcessive();
         }
 

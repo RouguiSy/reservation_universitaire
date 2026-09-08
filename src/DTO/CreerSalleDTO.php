@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\DTO;
 
 use App\Validator\SalleValidator;
+use App\Exception\ValidationException;
 
 class CreerSalleDTO
 {
@@ -34,18 +35,16 @@ class CreerSalleDTO
         $result = $validator->validate($data);
 
         if (!$result->estValide()) {
-            throw new \InvalidArgumentException(
-                'Donnees invalides: ' . implode(', ', $result->getErreurs())
-            );
+            throw new ValidationException($result->getErreurs());
         }
 
-        return new self(
-            $data['nom'],
-            $data['batiment'],
-            (int) $data['capacite'],
-            $data['type'],
-            isset($data['active']) ? (bool) $data['active'] : true
-        );
+        return (new CreerSalleDTOBuilder())
+            ->nom($data['nom'])
+            ->batiment($data['batiment'])
+            ->capacite((int) $data['capacite'])
+            ->type($data['type'])
+            ->active(isset($data['active']) ? (bool) $data['active'] : true)
+            ->build();
     }
 
     public function toArray(): array

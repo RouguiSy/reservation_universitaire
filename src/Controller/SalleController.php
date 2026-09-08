@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Repository\SalleRepositoryInterface;
 use App\DTO\CreerSalleDTO;
+use App\Exception\ValidationException;
 
 class SalleController
 {
@@ -22,6 +23,9 @@ class SalleController
 
     public function create(): void
     {
+        $errors = $_SESSION['form_errors']['salle'] ?? [];
+        $old = $_SESSION['form_old']['salle'] ?? [];
+        unset($_SESSION['form_errors']['salle'], $_SESSION['form_old']['salle']);
         require_once dirname(__DIR__, 2) . '/templates/salles/create.php';
     }
 
@@ -31,6 +35,12 @@ class SalleController
             $dto = CreerSalleDTO::depuisTableau($_POST);
             $this->salleRepository->creer($dto->toArray());
             $_SESSION['flash'] = ['type' => 'success', 'message' => 'Salle creee avec succes'];
+        } catch (ValidationException $e) {
+            $_SESSION['form_errors']['salle'] = $e->getErreurs();
+            $_SESSION['form_old']['salle'] = $_POST;
+            $_SESSION['flash'] = ['type' => 'error', 'message' => 'Veuillez corriger les champs signales.'];
+            header('Location: /salles/create');
+            exit;
         } catch (\Exception $e) {
             $_SESSION['flash'] = ['type' => 'error', 'message' => $e->getMessage()];
         }

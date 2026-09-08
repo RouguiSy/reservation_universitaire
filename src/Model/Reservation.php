@@ -50,7 +50,7 @@ class Reservation extends Model
     public function chevaucheAvec(Reservation $autre): bool
     {
         return $this->date_debut < $autre->date_fin &&
-               $this->date_fin > $autre->date_debut;
+                $this->date_fin > $autre->date_debut;
     }
 
     public function getDureeEnHeures(): float

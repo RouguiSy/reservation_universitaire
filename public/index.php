@@ -9,6 +9,7 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
+require_once dirname(__DIR__) . '/config/database.php';
 
 $containerBuilder = new ContainerBuilder();
 $containerBuilder->addDefinitions(dirname(__DIR__) . '/config/container.php');

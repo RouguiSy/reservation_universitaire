@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\DTO;
 
 use App\Validator\ReservationValidator;
+use App\Exception\ValidationException;
 
 class CreerReservationDTO
 {
@@ -37,19 +38,17 @@ class CreerReservationDTO
         $result = $validator->validate($data);
 
         if (!$result->estValide()) {
-            throw new \InvalidArgumentException(
-                'Donnees invalides: ' . implode(', ', $result->getErreurs())
-            );
+            throw new ValidationException($result->getErreurs());
         }
 
-        return new self(
-            (int) $data['salle_id'],
-            $data['responsable'],
-            $data['email'],
-            $data['motif'],
-            new \DateTimeImmutable($data['date_debut']),
-            new \DateTimeImmutable($data['date_fin'])
-        );
+        return (new CreerReservationDTOBuilder())
+            ->salleId((int) $data['salle_id'])
+            ->responsable($data['responsable'])
+            ->email($data['email'])
+            ->motif($data['motif'])
+            ->dateDebut(new \DateTimeImmutable($data['date_debut']))
+            ->dateFin(new \DateTimeImmutable($data['date_fin']))
+            ->build();
     }
 
     public function toArray(): array

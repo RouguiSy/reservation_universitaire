@@ -29,7 +29,7 @@ class EloquentReservationRepository implements ReservationRepositoryInterface
             ->where('statut', 'confirmee')
             ->where(function ($query) use ($debut, $fin) {
                 $query->where('date_debut', '<', $fin)
-                      ->where('date_fin', '>', $debut);
+                    ->where('date_fin', '>', $debut);
             })
             ->get();
     }
