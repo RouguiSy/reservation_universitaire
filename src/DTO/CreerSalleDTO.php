@@ -39,13 +39,13 @@ class CreerSalleDTO
             );
         }
 
-        return new self(
-            $data['nom'],
-            $data['batiment'],
-            (int) $data['capacite'],
-            $data['type'],
-            isset($data['active']) ? (bool) $data['active'] : true
-        );
+        return (new CreerSalleDTOBuilder())
+            ->nom($data['nom'])
+            ->batiment($data['batiment'])
+            ->capacite((int) $data['capacite'])
+            ->type($data['type'])
+            ->active(isset($data['active']) ? (bool) $data['active'] : true)
+            ->build();
     }
 
     public function toArray(): array

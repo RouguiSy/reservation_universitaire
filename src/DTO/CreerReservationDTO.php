@@ -42,14 +42,14 @@ class CreerReservationDTO
             );
         }
 
-        return new self(
-            (int) $data['salle_id'],
-            $data['responsable'],
-            $data['email'],
-            $data['motif'],
-            new \DateTimeImmutable($data['date_debut']),
-            new \DateTimeImmutable($data['date_fin'])
-        );
+        return (new CreerReservationDTOBuilder())
+            ->salleId((int) $data['salle_id'])
+            ->responsable($data['responsable'])
+            ->email($data['email'])
+            ->motif($data['motif'])
+            ->dateDebut(new \DateTimeImmutable($data['date_debut']))
+            ->dateFin(new \DateTimeImmutable($data['date_fin']))
+            ->build();
     }
 
     public function toArray(): array

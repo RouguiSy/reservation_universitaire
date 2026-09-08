@@ -20,14 +20,23 @@
     </nav>
 
     <main class="container">
-        <?php if (isset($_SESSION['flash'])): ?>
-            <div class="flash <?= $_SESSION['flash']['type'] ?>">
-                <?= htmlspecialchars($_SESSION['flash']['message']) ?>
-            </div>
-            <?php unset($_SESSION['flash']); ?>
-        <?php endif; ?>
+        <div class="home">
+            <h2>Bienvenue sur la plateforme de réservation de salles</h2>
+            <p>Gérez facilement vos salles et réservations.</p>
 
-        <?php echo $content ?? ''; ?>
+            <div class="cards">
+                <div class="card">
+                    <h3>Salles</h3>
+                    <p>Consultez et gérez toutes les salles disponibles.</p>
+                    <a href="/salles" class="btn btn-primary">Voir les salles</a>
+                </div>
+                <div class="card">
+                    <h3>Réservations</h3>
+                    <p>Créez et gérez vos réservations de salles.</p>
+                    <a href="/reservations" class="btn btn-primary">Voir les réservations</a>
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer>
