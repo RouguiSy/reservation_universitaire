@@ -24,6 +24,8 @@ return [
     AnnulerReservationService::class => \DI\autowire()
         ->constructorParameter('reservationRepository', \DI\get(ReservationRepositoryInterface::class)),
 
+    \App\Security\CsrfService::class => \DI\autowire(\App\Security\CsrfService::class),
+
     // Controleurs
     SalleController::class => \DI\autowire()
         ->constructorParameter('salleRepository', \DI\get(SalleRepositoryInterface::class)),

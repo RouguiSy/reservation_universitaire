@@ -28,6 +28,7 @@ class AuthController
             exit;
         }
         session_regenerate_id(true);
+        (new \App\Security\CsrfService())->regenerateToken();
         $_SESSION['user'] = ['id' => (int) $user->id, 'name' => $user->name, 'email' => $user->email, 'role' => $user->role];
         header('Location: ' . ($user->isAdmin() ? '/dashboard' : '/reservations'));
         exit;
@@ -37,6 +38,7 @@ class AuthController
     {
         unset($_SESSION['user']);
         session_regenerate_id(true);
+        (new \App\Security\CsrfService())->regenerateToken();
         header('Location: /login');
         exit;
     }

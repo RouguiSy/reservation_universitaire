@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Security\CsrfService;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 use Psr\Container\ContainerInterface;
@@ -24,10 +25,41 @@ class Application
 
     public function run(): void
     {
-        session_start();
+        require_once __DIR__ . '/helpers.php';
+
+        if (session_status() === PHP_SESSION_NONE) {
+            $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+                || (isset($_SERVER['SERVER_PORT']) && (int) $_SERVER['SERVER_PORT'] === 443);
+
+            session_set_cookie_params([
+                'lifetime' => 0,
+                'path' => '/',
+                'domain' => '',
+                'secure' => $isHttps,
+                'httponly' => true,
+                'samesite' => 'Lax',
+            ]);
+            session_start();
+        }
 
         $httpMethod = $_SERVER['REQUEST_METHOD'];
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+        if (in_array($httpMethod, ['POST', 'PUT', 'DELETE', 'PATCH'], true)) {
+            $submittedToken = $_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? null;
+            /** @var CsrfService $csrfService */
+            $csrfService = $this->container->has(CsrfService::class)
+                ? $this->container->get(CsrfService::class)
+                : new CsrfService();
+
+            if (!$csrfService->validate(is_string($submittedToken) ? $submittedToken : null)) {
+                http_response_code(403);
+                echo '<h1>403 - Jeton CSRF invalide ou expire</h1>';
+                echo '<p>Votre requete a ete bloquee pour des raisons de securite.</p>';
+                echo '<p><a href="javascript:history.back()">Retour au formulaire</a></p>';
+                return;
+            }
+        }
 
         if ($uri !== '/' && $uri !== '/home' && strpos($uri, '.css') === false) {
             $uri = rtrim($uri, '/');
@@ -102,3 +134,4 @@ class Application
             || preg_match('#^/salles/(toggle|delete)/\d+$#', $uri) === 1;
     }
 }
+

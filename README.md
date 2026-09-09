@@ -5,6 +5,11 @@
 ### Tests unitaires
 - CreerReservationServiceTest
 - AnnulerReservationServiceTest
+- CsrfServiceTest
+- CreerSalleDTOBuilderTest
+- CreerReservationDTOBuilderTest
+- InMemorySalleRepositoryTest
+- InMemoryReservationRepositoryTest
 
 ### Doublures (InMemory)
 - InMemorySalleRepository
@@ -13,3 +18,4 @@
 ### Exécution des tests
 ```bash
 composer test
+```
