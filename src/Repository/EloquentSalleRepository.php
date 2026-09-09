@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\Model\Salle;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class EloquentSalleRepository implements SalleRepositoryInterface
 {
@@ -25,6 +26,15 @@ class EloquentSalleRepository implements SalleRepositoryInterface
     public function toutes(): Collection
     {
         return Salle::query()->orderBy('nom')->get();
+    }
+
+    public function rechercher(string $terme, string $batiment, string $type, int $page, int $parPage): LengthAwarePaginator
+    {
+        $query = Salle::query()->orderBy('nom');
+        if ($terme !== '') $query->where(function ($builder) use ($terme): void { $builder->where('nom', 'like', "%{$terme}%")->orWhere('batiment', 'like', "%{$terme}%"); });
+        if ($batiment !== '') $query->where('batiment', $batiment);
+        if ($type !== '') $query->where('type', $type);
+        return $query->paginate($parPage, ['*'], 'page', max(1, $page));
     }
 
     public function actives(): Collection

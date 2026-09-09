@@ -4,6 +4,7 @@
 declare(strict_types=1);
 
 use App\Model\Salle;
+use App\Model\User;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -26,6 +27,15 @@ $salles = [
 ];
 
 $crees = 0;
+
+User::query()->firstOrCreate(
+    ['email' => 'admin@example.com'],
+    ['name' => 'Administrateur', 'password' => password_hash('admin123', PASSWORD_DEFAULT), 'role' => 'admin']
+);
+User::query()->firstOrCreate(
+    ['email' => 'responsable@example.com'],
+    ['name' => 'Responsable', 'password' => password_hash('responsable123', PASSWORD_DEFAULT), 'role' => 'responsable']
+);
 
 foreach ($salles as $donnees) {
     $salle = Salle::query()->firstOrCreate(

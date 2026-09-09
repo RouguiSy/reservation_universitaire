@@ -16,6 +16,8 @@
                 <li><a href="/reservations">Reservations</a></li>
                 <li><a href="/salles/create">Nouvelle salle</a></li>
                 <li><a href="/reservations/create">Nouvelle reservation</a></li>
+                <?php if (($_SESSION['user']['role'] ?? null) === 'admin'): ?><li><a href="/dashboard">Dashboard</a></li><?php endif; ?>
+                <?php if (isset($_SESSION['user'])): ?><li><a href="/logout">Deconnexion (<?= htmlspecialchars($_SESSION['user']['name']) ?>)</a></li><?php else: ?><li><a href="/login">Connexion</a></li><?php endif; ?>
             </ul>
         </nav>
     </div>

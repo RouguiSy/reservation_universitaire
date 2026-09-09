@@ -24,11 +24,9 @@ class ReservationController
     public function index(): void
     {
         $salleId = $_GET['salle'] ?? null;
-        if ($salleId) {
-            $reservations = $this->reservationRepository->trouverParSalle((int) $salleId);
-        } else {
-            $reservations = $this->reservationRepository->trouverParSalle(0);
-        }
+        $reservations = $salleId
+            ? $this->reservationRepository->trouverParSalle((int) $salleId)
+            : $this->reservationRepository->toutes();
         $salles = $this->salleRepository->actives();
         require_once dirname(__DIR__, 2) . '/templates/reservations/index.php';
     }

@@ -8,6 +8,9 @@ use Illuminate\Database\Schema\Blueprint;
 return new class {
     public function up(): void
     {
+        if (Capsule::schema()->hasTable('salles')) {
+            return;
+        }
         Capsule::schema()->create('salles', function (Blueprint $table) {
             $table->id();
             $table->string('nom', 100);

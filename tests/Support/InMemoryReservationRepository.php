@@ -18,6 +18,11 @@ class InMemoryReservationRepository implements ReservationRepositoryInterface
         return $this->reservations[$id] ?? null;
     }
 
+    public function toutes(): Collection
+    {
+        return new Collection(array_values($this->reservations));
+    }
+
     public function trouverParSalle(int $salleId): Collection
     {
         $result = array_filter(

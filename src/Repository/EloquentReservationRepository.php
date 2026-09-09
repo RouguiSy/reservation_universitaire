@@ -14,6 +14,11 @@ class EloquentReservationRepository implements ReservationRepositoryInterface
         return Reservation::query()->find($id);
     }
 
+    public function toutes(): Collection
+    {
+        return Reservation::query()->with('salle')->orderBy('date_debut')->get();
+    }
+
     public function trouverParSalle(int $salleId): Collection
     {
         return Reservation::query()

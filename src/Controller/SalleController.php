@@ -17,7 +17,11 @@ class SalleController
 
     public function index(): void
     {
-        $salles = $this->salleRepository->toutes();
+        $terme = trim((string) ($_GET['q'] ?? ''));
+        $batiment = trim((string) ($_GET['batiment'] ?? ''));
+        $type = trim((string) ($_GET['type'] ?? ''));
+        $salles = $this->salleRepository->rechercher($terme, $batiment, $type, (int) ($_GET['page'] ?? 1), 6);
+        $batiments = $this->salleRepository->toutes()->pluck('batiment')->unique()->sort()->values();
         require_once dirname(__DIR__, 2) . '/templates/salles/index.php';
     }
 

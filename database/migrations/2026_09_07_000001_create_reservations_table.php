@@ -8,6 +8,9 @@ use Illuminate\Database\Schema\Blueprint;
 return new class {
     public function up(): void
     {
+        if (Capsule::schema()->hasTable('reservations')) {
+            return;
+        }
         Capsule::schema()->create('reservations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('salle_id')->constrained('salles')->cascadeOnDelete();

@@ -6,6 +6,10 @@ use FastRoute\RouteCollector;
 
 return function (RouteCollector $r): void {
     $r->addRoute('GET', '/', 'App\\Controller\\HomeController@index');
+    $r->addRoute('GET', '/login', 'App\\Controller\\AuthController@login');
+    $r->addRoute('POST', '/login', 'App\\Controller\\AuthController@authenticate');
+    $r->addRoute('GET', '/logout', 'App\\Controller\\AuthController@logout');
+    $r->addRoute('GET', '/dashboard', 'App\\Controller\\DashboardController@index');
     $r->addRoute('GET', '/salles', 'App\\Controller\\SalleController@index');
     $r->addRoute('GET', '/salles/create', 'App\\Controller\\SalleController@create');
     $r->addRoute('POST', '/salles/store', 'App\\Controller\\SalleController@store');

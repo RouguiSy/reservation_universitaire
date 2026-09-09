@@ -7,6 +7,7 @@ namespace Tests\Support;
 use App\Model\Salle;
 use App\Repository\SalleRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class InMemorySalleRepository implements SalleRepositoryInterface
 {
@@ -31,6 +32,17 @@ class InMemorySalleRepository implements SalleRepositoryInterface
     public function toutes(): Collection
     {
         return new Collection(array_values($this->salles));
+    }
+
+    public function rechercher(string $terme, string $batiment, string $type, int $page, int $parPage): LengthAwarePaginator
+    {
+        $items = array_filter($this->salles, static function (Salle $salle) use ($terme, $batiment, $type): bool {
+            return ($terme === '' || stripos($salle->nom, $terme) !== false || stripos($salle->batiment, $terme) !== false)
+                && ($batiment === '' || $salle->batiment === $batiment)
+                && ($type === '' || $salle->type === $type);
+        });
+        $items = array_values($items);
+        return new LengthAwarePaginator(array_slice($items, ($page - 1) * $parPage, $parPage), count($items), $parPage, $page);
     }
 
     public function actives(): Collection

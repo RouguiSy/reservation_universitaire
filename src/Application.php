@@ -38,6 +38,17 @@ class Application
 
         $routeInfo = $this->dispatcher->dispatch($httpMethod, $uri);
 
+        if ($this->requiresAuthentication($uri) && !isset($_SESSION['user'])) {
+            header('Location: /login');
+            return;
+        }
+
+        if ($this->requiresAdmin($uri) && (($_SESSION['user']['role'] ?? null) !== 'admin')) {
+            http_response_code(403);
+            echo '<h1>403 - Acces reserve aux administrateurs</h1>';
+            return;
+        }
+
         switch ($routeInfo[0]) {
             case Dispatcher::NOT_FOUND:
                 $this->notFound();
@@ -52,7 +63,11 @@ class Application
                 if (is_string($handler) && strpos($handler, '@') !== false) {
                     [$controllerClass, $method] = explode('@', $handler);
                     $controller = $this->container->get($controllerClass);
-                    $controller->$method(...array_values($vars));
+                    $arguments = array_map(
+                        static fn (string $value): int|string => ctype_digit($value) ? (int) $value : $value,
+                        array_values($vars)
+                    );
+                    $controller->$method(...$arguments);
                 }
                 break;
         }
@@ -70,5 +85,20 @@ class Application
         echo '<h1>405 - Methode non autorisee</h1>';
         echo '<p>La methode HTTP utilisee n\'est pas autorisee pour cette URL.</p>';
         echo '<a href="/">Retour a l\'accueil</a>';
+    }
+
+    private function requiresAuthentication(string $uri): bool
+    {
+        return $uri === '/dashboard'
+            || str_starts_with($uri, '/reservations')
+            || in_array($uri, ['/salles/create', '/salles/store'], true)
+            || preg_match('#^/salles/(toggle|delete)/\d+$#', $uri) === 1;
+    }
+
+    private function requiresAdmin(string $uri): bool
+    {
+        return $uri === '/dashboard'
+            || in_array($uri, ['/salles/create', '/salles/store'], true)
+            || preg_match('#^/salles/(toggle|delete)/\d+$#', $uri) === 1;
     }
 }
