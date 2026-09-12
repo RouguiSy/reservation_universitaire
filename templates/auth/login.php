@@ -12,3 +12,17 @@
     </form>
 </section>
 <?php $content = ob_get_clean(); require dirname(__DIR__) . '/layout.php'; ?>
+
+<div style="background: #fff3cd; border: 1px solid #ffc107; padding: 15px; border-radius: 5px; margin-bottom: 20px; max-width: 400px; margin-left: auto; margin-right: auto;">
+    <h3 style="margin-top: 0; color: #856404; font-size: 1rem;"> Identifiants de démonstration</h3>
+    <p style="margin: 5px 0;"><strong>Administrateur :</strong></p>
+    <p style="margin: 5px 0; font-size: 0.9rem;">
+        Email : <code>admin@example.com</code><br>
+        Mot de passe : <code>admin123</code>
+    </p>
+    <p style="margin: 5px 0;"><strong>Responsable :</strong></p>
+    <p style="margin: 5px 0; font-size: 0.9rem;">
+        Email : <code>responsable@example.com</code><br>
+        Mot de passe : <code>responsable123</code>
+    </p>
+</div>
