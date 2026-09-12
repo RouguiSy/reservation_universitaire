@@ -9,7 +9,7 @@ return [
     'database'  => $_ENV['DB_DATABASE'] ?? 'reservation_salles',
     'username'  => $_ENV['DB_USERNAME'] ?? 'app_user',
     'password'  => $_ENV['DB_PASSWORD'] ?? 'app_password',
-    'charset'   => 'utf8mb4',
-    'collation' => 'utf8mb4_unicode_ci',
+    'charset'   => 'utf8',
+    'collation' => 'utf8_unicode_ci',
     'prefix'    => '',
 ];
