@@ -63,4 +63,17 @@ class CsrfServiceTest extends TestCase
         $this->assertTrue($this->csrfService->validate($newToken));
         $this->assertFalse($this->csrfService->validate($initialToken));
     }
+
+    public function testWithCustomSessionManager(): void
+    {
+        $mockSession = $this->createMock(\App\Session\SessionManagerInterface::class);
+        $mockSession->expects($this->once())
+            ->method('get')
+            ->with('csrf_token')
+            ->willReturn('custom-csrf-token-1234567890');
+
+        $csrfService = new CsrfService($mockSession);
+        $this->assertSame('custom-csrf-token-1234567890', $csrfService->getToken());
+    }
 }
+

@@ -5,10 +5,15 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Model\Reservation;
+use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Database\Eloquent\Collection;
 
 class EloquentReservationRepository implements ReservationRepositoryInterface
 {
+    public function __construct(
+        private ?Capsule $capsule = null
+    ) {
+    }
     public function trouver(int $id): ?Reservation
     {
         return Reservation::query()->find($id);

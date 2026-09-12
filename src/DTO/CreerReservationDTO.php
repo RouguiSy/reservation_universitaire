@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DTO;
 
-use App\Validator\ReservationValidator;
+use App\Validation\ReservationValidator;
 use App\Exception\ValidationException;
 
 class CreerReservationDTO

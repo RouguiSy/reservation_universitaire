@@ -10,8 +10,6 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 $dotenv = Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
 
-$capsule = require_once dirname(__DIR__) . '/config/database.php';
-
 $command = $argv[1] ?? null;
 
 switch ($command) {

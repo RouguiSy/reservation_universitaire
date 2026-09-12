@@ -16,4 +16,4 @@
         </article>
     </div>
 </section>
-<?php $content = ob_get_clean(); require dirname(__DIR__) . '/templates/layout.php'; ?>
+<?php $content = ob_get_clean(); require __DIR__ . '/layout.php'; ?>

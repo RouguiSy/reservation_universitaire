@@ -9,11 +9,13 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
-require_once dirname(__DIR__) . '/config/database.php';
 
 $containerBuilder = new ContainerBuilder();
 $containerBuilder->addDefinitions(dirname(__DIR__) . '/config/container.php');
 $container = $containerBuilder->build();
 
-$app = new Application($container);
-$app->run();
+$application = $container->has(Application::class)
+    ? $container->get(Application::class)
+    : new Application($container);
+$application->run();
+

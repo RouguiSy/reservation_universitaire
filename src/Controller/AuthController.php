@@ -4,41 +4,71 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Model\User;
+use App\Security\CsrfService;
+use App\Service\AuthService;
+use App\Service\AuthServiceInterface;
+use App\Session\SessionManager;
+use App\Session\SessionManagerInterface;
 
 class AuthController
 {
+    public function __construct(
+        private ?AuthServiceInterface $authService = null,
+        private SessionManagerInterface $session = new SessionManager(),
+        private CsrfService $csrfService = new CsrfService()
+    ) {
+        $this->authService = $authService ?? new AuthService();
+    }
+
     public function login(): void
     {
-        $errors = $_SESSION['auth_errors'] ?? [];
-        $old = $_SESSION['auth_old'] ?? [];
-        unset($_SESSION['auth_errors'], $_SESSION['auth_old']);
-        require_once dirname(__DIR__, 2) . '/templates/auth/login.php';
+        $errors = $this->session->getFormErrors('auth');
+        $old = $this->session->getFormOld('auth');
+
+        respond('auth/login.php', [
+            'errors' => $errors,
+            'old' => $old,
+        ]);
     }
 
     public function authenticate(): void
     {
-        $email = trim((string) ($_POST['email'] ?? ''));
-        $password = (string) ($_POST['password'] ?? '');
-        $user = User::query()->where('email', $email)->first();
-        if (!$user || !password_verify($password, $user->password)) {
-            $_SESSION['auth_errors'] = ['global' => 'Email ou mot de passe incorrect.'];
-            $_SESSION['auth_old'] = ['email' => $email];
-            header('Location: /login');
-            exit;
+        $input = get_request_data();
+        $email = trim((string) ($input['email'] ?? ''));
+        $password = (string) ($input['password'] ?? '');
+
+        $user = $this->authService->authentifierOrFail($email, $password);
+
+        $this->session->regenerate(true);
+        $this->csrfService->regenerateToken();
+        $userData = ['id' => (int) $user->id, 'name' => $user->name, 'email' => $user->email, 'role' => $user->role];
+        $this->session->setUser($userData);
+
+        if (wantsJson()) {
+            json_response([
+                'status' => 'success',
+                'message' => message('auth.login_success'),
+                'user' => $userData,
+            ]);
         }
-        session_regenerate_id(true);
-        (new \App\Security\CsrfService())->regenerateToken();
-        $_SESSION['user'] = ['id' => (int) $user->id, 'name' => $user->name, 'email' => $user->email, 'role' => $user->role];
+
         header('Location: ' . ($user->isAdmin() ? '/dashboard' : '/reservations'));
         exit;
     }
 
     public function logout(): void
     {
-        unset($_SESSION['user']);
-        session_regenerate_id(true);
-        (new \App\Security\CsrfService())->regenerateToken();
+        $this->session->removeUser();
+        $this->session->regenerate(true);
+        $this->csrfService->regenerateToken();
+
+        if (wantsJson()) {
+            json_response([
+                'status' => 'success',
+                'message' => message('auth.logout_success'),
+            ]);
+        }
+
         header('Location: /login');
         exit;
     }

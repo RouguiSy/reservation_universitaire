@@ -5,11 +5,16 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Model\Salle;
+use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class EloquentSalleRepository implements SalleRepositoryInterface
 {
+    public function __construct(
+        private ?Capsule $capsule = null
+    ) {
+    }
     public function trouver(int $id): ?Salle
     {
         return Salle::query()->find($id);

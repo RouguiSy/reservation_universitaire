@@ -4,72 +4,94 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Repository\SalleRepositoryInterface;
-use App\Repository\ReservationRepositoryInterface;
-use App\Service\CreerReservationService;
-use App\Service\AnnulerReservationService;
 use App\DTO\CreerReservationDTO;
-use App\Exception\ValidationException;
+use App\Service\ReservationServiceInterface;
+use App\Session\SessionManager;
+use App\Session\SessionManagerInterface;
 
 class ReservationController
 {
     public function __construct(
-        private SalleRepositoryInterface $salleRepository,
-        private ReservationRepositoryInterface $reservationRepository,
-        private CreerReservationService $creerService,
-        private AnnulerReservationService $annulerService
+        private ReservationServiceInterface $reservationService,
+        private SessionManagerInterface $session = new SessionManager()
     ) {
     }
 
     public function index(): void
     {
-        $salleId = $_GET['salle'] ?? null;
-        $reservations = $salleId
-            ? $this->reservationRepository->trouverParSalle((int) $salleId)
-            : $this->reservationRepository->toutes();
-        $salles = $this->salleRepository->actives();
-        require_once dirname(__DIR__, 2) . '/templates/reservations/index.php';
+        $salleId = isset($_GET['salle']) && ctype_digit((string) $_GET['salle']) ? (int) $_GET['salle'] : null;
+        $reservations = $this->reservationService->lister($salleId);
+        $salles = $this->reservationService->listerSallesActives();
+
+        respond('reservations/index.php', [
+            'reservations' => $reservations,
+            'salles' => $salles,
+            'salleId' => $salleId,
+        ]);
     }
 
     public function create(): void
     {
-        $salles = $this->salleRepository->actives();
-        $errors = $_SESSION['form_errors']['reservation'] ?? [];
-        $old = $_SESSION['form_old']['reservation'] ?? [];
-        unset($_SESSION['form_errors']['reservation'], $_SESSION['form_old']['reservation']);
-        require_once dirname(__DIR__, 2) . '/templates/reservations/create.php';
+        $salles = $this->reservationService->listerSallesActives();
+        $errors = $this->session->getFormErrors('reservation');
+        $old = $this->session->getFormOld('reservation');
+
+        respond('reservations/form.php', [
+            'salles' => $salles,
+            'errors' => $errors,
+            'old' => $old,
+        ]);
     }
 
     public function store(): void
     {
-        try {
-            $dto = CreerReservationDTO::depuisTableau($_POST);
-            $this->creerService->executer($dto);
-            $_SESSION['flash'] = ['type' => 'success', 'message' => 'Reservation creee avec succes'];
-        } catch (ValidationException $e) {
-            $_SESSION['form_errors']['reservation'] = $e->getErreurs();
-            $_SESSION['form_old']['reservation'] = $_POST;
-            $_SESSION['flash'] = ['type' => 'error', 'message' => 'Veuillez corriger les champs signales.'];
-            header('Location: /reservations/create');
-            exit;
-        } catch (\Exception $e) {
-            $_SESSION['flash'] = ['type' => 'error', 'message' => $e->getMessage()];
+        $input = get_request_data();
+        $dto = CreerReservationDTO::depuisTableau($input);
+        $reservation = $this->reservationService->creer($dto);
+
+        if (wantsJson()) {
+            json_response([
+                'status' => 'success',
+                'message' => message('reservation.created'),
+                'data' => $reservation,
+            ], 201);
         }
 
+        $this->session->flash('success', message('reservation.created'));
         header('Location: /reservations');
         exit;
     }
 
     public function cancel(int $id): void
     {
-        try {
-            $this->annulerService->executer($id);
-            $_SESSION['flash'] = ['type' => 'success', 'message' => 'Reservation annulee avec succes'];
-        } catch (\Exception $e) {
-            $_SESSION['flash'] = ['type' => 'error', 'message' => $e->getMessage()];
+        $reservation = $this->reservationService->annuler($id);
+
+        if (wantsJson()) {
+            json_response([
+                'status' => 'success',
+                'message' => message('reservation.cancelled'),
+                'data' => $reservation,
+            ]);
         }
 
+        $this->session->flash('success', message('reservation.cancelled'));
         header('Location: /reservations');
         exit;
+    }
+
+    public function show(int $id): void
+    {
+        $reservation = $this->reservationService->trouverOrFail($id);
+
+        if (wantsJson()) {
+            json_response([
+                'status' => 'success',
+                'data' => $reservation,
+            ]);
+        }
+
+        respond('reservations/show.php', [
+            'reservation' => $reservation,
+        ]);
     }
 }

@@ -8,6 +8,6 @@ class HomeController
 {
     public function index(): void
     {
-        require_once dirname(__DIR__, 2) . '/templates/home.php';
+        respond('home.php');
     }
 }

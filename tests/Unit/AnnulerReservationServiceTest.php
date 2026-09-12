@@ -39,7 +39,7 @@ class AnnulerReservationServiceTest extends TestCase
 
     public function testReservationNonTrouvee(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\App\Exception\NotFoundException::class);
         $this->expectExceptionMessage('Reservation non trouvee');
         $this->service->executer(999);
     }
@@ -56,7 +56,7 @@ class AnnulerReservationServiceTest extends TestCase
             'statut' => 'annulee'
         ]);
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\App\Exception\BusinessException::class);
         $this->expectExceptionMessage('Cette reservation est deja annulee');
         $this->service->executer($reservation->id);
     }

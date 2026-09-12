@@ -16,18 +16,17 @@
                 <li><a href="/reservations">Reservations</a></li>
                 <li><a href="/salles/create">Nouvelle salle</a></li>
                 <li><a href="/reservations/create">Nouvelle reservation</a></li>
-                <?php if (($_SESSION['user']['role'] ?? null) === 'admin'): ?><li><a href="/dashboard">Dashboard</a></li><?php endif; ?>
-                <?php if (isset($_SESSION['user'])): ?><li><a href="/logout">Deconnexion (<?= htmlspecialchars($_SESSION['user']['name']) ?>)</a></li><?php else: ?><li><a href="/login">Connexion</a></li><?php endif; ?>
+                <?php if (session()->isAdmin()): ?><li><a href="/dashboard">Dashboard</a></li><?php endif; ?>
+                <?php if (session()->hasUser()): ?><li><a href="/logout">Deconnexion (<?= htmlspecialchars((string) (session()->getUser()['name'] ?? '')) ?>)</a></li><?php else: ?><li><a href="/login">Connexion</a></li><?php endif; ?>
             </ul>
         </nav>
     </div>
 </header>
 <main class="container">
-    <?php if (isset($_SESSION['flash'])): ?>
-        <div class="flash <?= htmlspecialchars($_SESSION['flash']['type']) ?>">
-            <?= htmlspecialchars($_SESSION['flash']['message']) ?>
+    <?php if ($flash = session()->getFlash()): ?>
+        <div class="flash <?= htmlspecialchars($flash['type'] ?? '') ?>">
+            <?= htmlspecialchars($flash['message'] ?? '') ?>
         </div>
-        <?php unset($_SESSION['flash']); ?>
     <?php endif; ?>
     <?= $content ?? '' ?>
 </main>

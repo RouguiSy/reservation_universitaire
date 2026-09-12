@@ -10,7 +10,10 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
 
-$capsule = require_once dirname(__DIR__) . '/config/database.php';
+$builder = new \DI\ContainerBuilder();
+$builder->addDefinitions(dirname(__DIR__) . '/config/container.php');
+$container = $builder->build();
+$capsule = $container->get(Capsule::class);
 
 $migrations = glob(dirname(__DIR__) . '/database/migrations/*.php');
 

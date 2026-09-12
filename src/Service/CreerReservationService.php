@@ -10,7 +10,7 @@ use App\Repository\SalleRepositoryInterface;
 use App\Repository\ReservationRepositoryInterface;
 use App\Exception\SalleIndisponibleException;
 
-class CreerReservationService
+class CreerReservationService implements CreerReservationServiceInterface
 {
     public function __construct(
         private SalleRepositoryInterface $salleRepository,

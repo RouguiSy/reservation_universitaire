@@ -4,31 +4,34 @@ declare(strict_types=1);
 
 namespace App\Security;
 
+use App\Session\SessionManager;
+use App\Session\SessionManagerInterface;
+
 class CsrfService
 {
     private const SESSION_KEY = 'csrf_token';
 
+    private SessionManagerInterface $session;
+
+    public function __construct(?SessionManagerInterface $session = null)
+    {
+        $this->session = $session ?? (function_exists('session') ? session() : new SessionManager());
+    }
 
     public function getToken(): string
     {
-        if (session_status() !== PHP_SESSION_ACTIVE) {
-            session_start();
+        $token = $this->session->get(self::SESSION_KEY);
+        if (!is_string($token) || $token === '') {
+            $token = bin2hex(random_bytes(32));
+            $this->session->set(self::SESSION_KEY, $token);
         }
 
-        if (empty($_SESSION[self::SESSION_KEY]) || !is_string($_SESSION[self::SESSION_KEY])) {
-            $_SESSION[self::SESSION_KEY] = bin2hex(random_bytes(32));
-        }
-
-        return $_SESSION[self::SESSION_KEY];
+        return $token;
     }
 
     public function validate(?string $token): bool
     {
-        if (session_status() !== PHP_SESSION_ACTIVE) {
-            session_start();
-        }
-
-        $sessionToken = $_SESSION[self::SESSION_KEY] ?? null;
+        $sessionToken = $this->session->get(self::SESSION_KEY);
 
         if (!is_string($sessionToken) || empty($token)) {
             return false;
@@ -39,11 +42,8 @@ class CsrfService
 
     public function regenerateToken(): string
     {
-        if (session_status() !== PHP_SESSION_ACTIVE) {
-            session_start();
-        }
-
-        $_SESSION[self::SESSION_KEY] = bin2hex(random_bytes(32));
-        return $_SESSION[self::SESSION_KEY];
+        $token = bin2hex(random_bytes(32));
+        $this->session->set(self::SESSION_KEY, $token);
+        return $token;
     }
 }
