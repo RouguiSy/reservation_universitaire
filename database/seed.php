@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 use App\Model\Salle;
 use App\Model\User;
+use Illuminate\Database\Capsule\Manager as Capsule; 
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
