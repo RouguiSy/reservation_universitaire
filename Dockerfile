@@ -5,6 +5,7 @@ RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     libfreetype6-dev \
     libsqlite3-dev \
+    libpq-dev \
     zip \
     unzip \
     git \
